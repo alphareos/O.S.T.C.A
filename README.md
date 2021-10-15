@@ -1,2 +1,2 @@
 # oistica
-a web portal for oisstica
+a website for oisstica
