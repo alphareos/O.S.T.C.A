@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>News</h2>
+          <ol>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li>News</li>
+          </ol>
+        </div>
+
+      </div>
+    </section><!-- End Breadcrumbs -->
+
+    <!-- ======= Blog Section ======= -->
+    <section id="blog" class="blog">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row">
+
+          <div class="col-lg-8 entries">
+
+            {% for Post in postPaginator %}
+            <article class="entry">
+
+              <div class="entry-img">
+                <img src="{{ Post.image.url }}" alt="" class="img-fluid">
+              </div>
+
+              <h2 class="entry-title">
+                <a href="blog-single.html">{{ Post.title }}</a>
+              </h2>
+
+              <div class="entry-meta">
+                <ul>
+                  <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="{% url 'post_detail' slug=Post.slug %}">{{ Post.author }}</a></li>
+                  <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="{% url 'post_detail' slug=Post.slug %}">{{ Post.pub_date }}</a></li>
+
+                </ul>
+              </div>
+
+              <div class="entry-content">
+                <p>
+                  {{ Post.snippet }}
+                </p>
+                <div class="read-more">
+                  <a href="{% url 'post_detail' slug=Post.slug %}">Read More</a>
+                </div>
+              </div>
+
+            </article><!-- End blog entry -->
+            {% endfor %}
+            <div class="blog-pagination">
+              <ul class="justify-content-center">
+
+
+                {% if postPaginator.has_previous %}
+
+                <li class="active"><a href="?page=1"> &laquo 1 </a></li>
+                {% endif %}
+                <li class="active"><a href=""> page {{ postPaginator.number }} of {{ postPaginator.paginator.num_pages }}</a></li>
+                {% if postPaginator.has_next %}
+                <li><a href="?page={{ postPaginator.next_page_number }}">next</a></li>
+                 <li class="active"><a href="?page={{ postPaginator.paginator.num_pages }}"> &raquo last </a></li>
+                {% endif %}
+
+
+              </ul>
+            </div>
+
+          </div><!-- End blog entries list -->
+
+          <div class="col-lg-4">
+
+            <div class="sidebar">
+
+              <h3 class="sidebar-title">Search</h3>
+              <div class="sidebar-item search-form">
+
+                <form action="{% url 'search' %}" method="get">
+
+                  <input type="text">
+                  <button type="submit"><i class="bi bi-search"></i></button>
+                </form>
+              </div><!-- End sidebar search form-->
+
+
+
+              <h3 class="sidebar-title">Recent Posts</h3>
+              {% for Post in recentPostPaginator %}
+              <div class="sidebar-item recent-posts">
+                <div class="post-item clearfix">
+                  <img src="{{ Post.image.url }}" alt="">
+                  <h4><a href="{% url 'post_detail' slug=Post.slug %}">{{ Post.title }}</a></h4>
+                  <time >{{ Post.pub_date }}</time>
+                </div>
+                {% endfor %}
+              </div><!-- End sidebar recent posts-->
+
+
+
+            </div><!-- End sidebar -->
+
+          </div><!-- End blog sidebar -->
+
+        </div>
+
+      </div>
+    </section><!-- End Blog Section -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+ {% endblock %}
